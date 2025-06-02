@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/gin-contrib/cors"
@@ -25,7 +26,6 @@ type Category struct {
 }
 
 func main() {
-
 	db, err := gorm.Open(sqlite.Open("app.db"), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
@@ -36,7 +36,10 @@ func main() {
 	r := gin.Default()
 
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:5173"},
+		AllowOrigins: []string{
+			"http://localhost:5173",
+			"https://to-do-list-tau-taupe-69.vercel.app/",
+		},
 		AllowMethods:     []string{"GET", "POST", "DELETE", "PUT", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type"},
 		AllowCredentials: true,
@@ -87,6 +90,10 @@ func main() {
 		db.Delete(&Category{}, id)
 		c.JSON(http.StatusOK, gin.H{"message": "Category deleted"})
 	})
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "5001"
+	}
+	r.Run(":" + port)
 
-	r.Run(":5001")
 }
