@@ -38,7 +38,7 @@ func main() {
 	r.Use(cors.New(cors.Config{
 		AllowOrigins: []string{
 			"http://localhost:5173",
-			"https://to-do-list-tau-taupe-69.vercel.app/",
+			"https://to-do-list-tau-taupe-69.vercel.app",
 		},
 		AllowMethods:     []string{"GET", "POST", "DELETE", "PUT", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type"},
